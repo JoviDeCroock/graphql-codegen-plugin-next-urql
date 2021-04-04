@@ -1,1 +1,1 @@
-# graphql-codegen-plugin-next-urql
+
