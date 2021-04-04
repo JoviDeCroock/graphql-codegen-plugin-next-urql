@@ -99,6 +99,7 @@ export const extractOperations = async (files: string[], write?: boolean): Promi
       await visitFile(file, queries);
       console.log(`[Extraction] - ${file}`);
       console.log(`[Extraction] - ${queries.length}`);
+      // TODO: add export const get<page><query>Data = (...variables) => client.query({ query: MY_QUERY, variables: { ...variables } })
       if (write) await fs.writeFile(path.resolve(process.cwd(), '__generated__', `${file}_queries.ts`), queries.join('\n'))
       console.log(`[Extraction] - Written ${file}_queries.ts`);
       results[`${getFileName(file)}_queries.ts`] = JSON.stringify(queries, undefined, 2);
