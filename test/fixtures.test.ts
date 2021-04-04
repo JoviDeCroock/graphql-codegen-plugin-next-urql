@@ -22,7 +22,7 @@ describe("fixtures", () => {
     `);
   });
 
-  it.only("should extract from a simple dir", async () => {
+  it("should extract from a simple dir", async () => {
     const p = path.resolve(__dirname, "imports");
     const files = await glob(`${p}/pages/*.{js,jsx,tsx}`);
     const result = await extractOperations(p, files, false);
