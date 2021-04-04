@@ -10,7 +10,12 @@ type CollectedQuery = {
   variables: string[];
 }
 
-const visitFile = async (baseDir: string, file: string, queries: CollectedQuery[]) => {
+const getFileName = (file) => {
+  const fileParts = file.split(path.sep);
+  return fileParts[fileParts.length - 1];
+}
+
+const visitFile = async (file: string, queries: CollectedQuery[]) => {
   const imports: string[] = [];
 
   const p = path.resolve(process.cwd(), file)
@@ -46,7 +51,7 @@ const visitFile = async (baseDir: string, file: string, queries: CollectedQuery[
 
             if (queriesNode) {
               const name = queriesNode.value.name;
-              const id = `${file}_query_${name}`;
+              const id = `${getFileName(file)}_query_${name}`;
     
               if (variablesNode) {
                 const gatheredVariables = variablesNode.value.properties.map(x => x.key.name);
@@ -67,36 +72,36 @@ const visitFile = async (baseDir: string, file: string, queries: CollectedQuery[
 
         let variableName;
         if (templatePath.parentPath.isVariableDeclarator()) {
-          // TODO: array case
+          // @ts-ignore
           variableName = templatePath.parentPath.node.id.name;
         } else {
           // TODO: yikes
         }
 
         queries.push({
-          id: `${file}_query_${variableName}`,
-          query: `export const ${file}_query_${variableName} = gql${graphqlQuery}`,
+          id: `${getFileName(file)}_query_${variableName}`,
+          query: `export const ${getFileName(file)}_query_${variableName} = gql${graphqlQuery}`,
           variables: [],
         });
       }
     }
   });
 
-  await Promise.all(imports.map(file => visitFile(baseDir, file, queries)));
+  await Promise.all(imports.map(file => visitFile(file, queries)));
 }
 
-export const extractOperations = async (baseDir: string, files: string[], write?: boolean): Promise<any> => {
+export const extractOperations = async (files: string[], write?: boolean): Promise<any> => {
   try {
     const results: { [file: string]: string } = {};
 
     for (const file of files) {
       const queries: CollectedQuery[] = [];
-      await visitFile(baseDir, file, queries);
+      await visitFile(file, queries);
       console.log(`[Extraction] - ${file}`);
       console.log(`[Extraction] - ${queries.length}`);
       if (write) await fs.writeFile(path.resolve(process.cwd(), '__generated__', `${file}_queries.ts`), queries.join('\n'))
       console.log(`[Extraction] - Written ${file}_queries.ts`);
-      results[`${file}_queries.ts`] = JSON.stringify(queries, undefined, 2);
+      results[`${getFileName(file)}_queries.ts`] = JSON.stringify(queries, undefined, 2);
     }
 
     return results;
