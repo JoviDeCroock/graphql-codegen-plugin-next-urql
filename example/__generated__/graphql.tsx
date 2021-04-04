@@ -82,6 +82,12 @@ export type GetTodosFragmentedQuery = (
   )>>> }
 );
 
+export const TodoFieldsFragmentDoc = gql`
+    fragment TodoFields on Todo {
+  id
+  text
+}
+    `;
 export const GetTodosNestedDocument = gql`
     query getTodosNested {
   todos {
@@ -102,7 +108,6 @@ export async function getGetTodosNestedData(
     
       return { props: { urqlState: ssrCache.extractData() } };
     }
-
 export const GetTodosDocument = gql`
     query getTodos {
   todos {
@@ -124,7 +129,6 @@ export async function getGetTodosData(
     
       return { props: { urqlState: ssrCache.extractData() } };
     }
-
 export const GetTodosFragmentedDocument = gql`
     query getTodosFragmented {
   todos {

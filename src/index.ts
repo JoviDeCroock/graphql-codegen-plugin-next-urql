@@ -7,6 +7,7 @@ import {
   concatAST,
   visit,
   DocumentNode,
+  print,
 } from "graphql";
 
 import { UrqlNextVisitor } from "./visitor";
@@ -44,8 +45,6 @@ export const plugin: PluginFunction<
 
   return {
     prepend: visitor.getImports(),
-    content: [
-      ...visitorResult.definitions.filter((t) => typeof t === "string"),
-    ].join("\n\n"),
+    content: [visitor.fragments, ...visitorResult.definitions.filter(t => typeof t === 'string')].join('\n'),
   };
 };
