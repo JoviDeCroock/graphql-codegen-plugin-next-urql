@@ -1,11 +1,28 @@
 overwrite: true
 schema: "http://localhost:3000/api/graphql"
-documents: "./**/*.tsx"
 generates:
-  __generated__/graphql.tsx:
+  __generated__/graphql.ts:
+    documents: "./**/*.tsx"
     plugins:
       - "typescript"
       - "typescript-operations"
+    config:
+      documentMode: graphQLTag
+  __generated__/pages.ts:
+    preset: import-types
+    presetConfig:
+      typesPath: ./graphql
+    documents: "./**/*.tsx"
+    plugins:
+      - "../build/index.js"
+    config:
+      documentMode: graphQLTag
+  __generated__:
+    documents: "./components/**/*.tsx"
+    preset: near-operation-file
+    presetConfig:
+      baseTypesPath: graphql.ts
+    plugins:
       - "../build/index.js"
     config:
       documentMode: graphQLTag

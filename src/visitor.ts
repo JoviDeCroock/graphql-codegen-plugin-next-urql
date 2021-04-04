@@ -45,7 +45,7 @@ export class UrqlNextVisitor extends ClientSideBaseVisitor<
     if (node.operation !== 'query') return '';
 
     const getData = `export async function get${operationName}Data(
-      variables?: ${operationVariablesTypes}
+      variables?: Types.${operationVariablesTypes}
     ): Promise<{ props: { urqlState: { [key: string]: object } } }> {
       const ssrCache = ssrExchange({ isClient: false });
       const client = initUrqlClient({
@@ -53,7 +53,7 @@ export class UrqlNextVisitor extends ClientSideBaseVisitor<
         exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange]
       }, false);
 
-      await client.query<${operationResultType}>(${documentVariableName}, variables).toPromise();
+      await client.query<Types.${operationResultType}>(${documentVariableName}, variables).toPromise();
     
       return { props: { urqlState: ssrCache.extractData() } };
     }`

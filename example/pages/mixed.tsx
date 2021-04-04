@@ -1,6 +1,7 @@
 import { Messages } from '../components/Messages';
+import { getGetMessagesData } from '../components/Messages.generated';
 import { Todos } from '../components/Todos';
-import { getGetTodosNestedData, getGetMessagesData } from '../__generated__/graphql';
+import { getGetTodosNestedData } from '../components/Todos.generated';
 
 function Index() {
   return (

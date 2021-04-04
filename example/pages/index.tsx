@@ -1,6 +1,6 @@
 import { gql } from "@urql/core";
 import { useQuery } from "urql";
-import { getGetTodosData } from '../__generated__/graphql';
+import { getGetTodosData } from '../__generated__/pages';
 
 const TODOS_QUERY = gql`
   query getTodos {

@@ -1,7 +1,7 @@
 import { gql } from "@urql/core";
 import { useQuery } from "urql";
 import { Todo, TODO_FRAGMENT } from '../components/Todo';
-import { getGetTodosFragmentedData } from '../__generated__/graphql';
+import { getGetTodosFragmentedData } from '../__generated__/pages';
 
 const TODOS_QUERY = gql`
   query getTodosFragmented {

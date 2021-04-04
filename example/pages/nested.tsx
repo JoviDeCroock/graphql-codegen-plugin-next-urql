@@ -1,5 +1,5 @@
 import { Todos } from '../components/Todos';
-import { getGetTodosNestedData } from '../__generated__/graphql';
+import { getGetTodosNestedData } from '../components/Todos.generated';
 
 function Index() {
   return <Todos />
