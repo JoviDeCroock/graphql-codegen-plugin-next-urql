@@ -1,10 +1,9 @@
 import { gql } from "@urql/core";
 import { useQuery } from "urql";
-import { Todo, TODO_FRAGMENT } from '../components/Todo';
-import { getGetTodosFragmentedData } from '../__generated__/graphql';
+import { Todo, TODO_FRAGMENT } from './Todo';
 
 const TODOS_QUERY = gql`
-  query getTodosFragmented {
+  query getTodosNested {
     todos {
       ...TodoFields
     }
@@ -13,7 +12,7 @@ const TODOS_QUERY = gql`
   ${TODO_FRAGMENT}
 `;
 
-function Index() {
+export function Todos() {
   const [res] = useQuery({ query: TODOS_QUERY });
   return (
     <div>
@@ -23,8 +22,3 @@ function Index() {
   );
 }
 
-export async function getServerSideProps() {
-  return await getGetTodosFragmentedData();
-}
-
-export default Index

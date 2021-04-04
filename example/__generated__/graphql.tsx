@@ -49,6 +49,17 @@ export type TodoFieldsFragment = (
   & Pick<Todo, 'id' | 'text'>
 );
 
+export type GetTodosNestedQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTodosNestedQuery = (
+  { __typename?: 'Query' }
+  & { todos?: Maybe<Array<Maybe<(
+    { __typename?: 'Todo' }
+    & TodoFieldsFragment
+  )>>> }
+);
+
 export type GetTodosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -71,6 +82,27 @@ export type GetTodosFragmentedQuery = (
   )>>> }
 );
 
+export const GetTodosNestedDocument = gql`
+    query getTodosNested {
+  todos {
+    ...TodoFields
+  }
+}
+    ${TodoFieldsFragmentDoc}`;
+export async function getGetTodosNestedData(
+      variables?: GetTodosNestedQueryVariables
+    ): Promise<object> {
+      const ssrCache = ssrExchange({ isClient: false });
+      const client = initUrqlClient({
+        url: "http://localhost:3000/api/graphql",
+        exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange]
+      }, false);
+
+      await client.query<GetTodosNestedQuery>(GetTodosNestedDocument, variables).toPromise();
+    
+      return { props: { urqlState: ssrCache.extractData() } };
+    }
+
 export const GetTodosDocument = gql`
     query getTodos {
   todos {
@@ -79,8 +111,6 @@ export const GetTodosDocument = gql`
   }
 }
     `;
-
-console.log(GetTodosDocument.__key)
 export async function getGetTodosData(
       variables?: GetTodosQueryVariables
     ): Promise<object> {
@@ -94,19 +124,14 @@ export async function getGetTodosData(
     
       return { props: { urqlState: ssrCache.extractData() } };
     }
-    const TodoFieldsFragmentDoc = gql`
-    fragment TodoFields on Todo {
-      id
-      text
-    }
-  `;
+
 export const GetTodosFragmentedDocument = gql`
     query getTodosFragmented {
   todos {
     ...TodoFields
   }
 }
-    ${TodoFieldsFragmentDoc}`; // TODO: this variable is not decalred yet
+    ${TodoFieldsFragmentDoc}`;
 export async function getGetTodosFragmentedData(
       variables?: GetTodosFragmentedQueryVariables
     ): Promise<object> {

@@ -1,6 +1,5 @@
 import { gql } from "@urql/core";
 
-// TODO: currently strugging with __key missmatch between getGetTodosData & this one
 export const TODO_FRAGMENT = gql`
   fragment TodoFields on Todo {
     id
