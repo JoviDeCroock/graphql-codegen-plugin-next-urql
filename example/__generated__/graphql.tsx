@@ -79,6 +79,8 @@ export const GetTodosDocument = gql`
   }
 }
     `;
+
+console.log(GetTodosDocument.__key)
 export async function getGetTodosData(
       variables?: GetTodosQueryVariables
     ): Promise<object> {
@@ -88,11 +90,16 @@ export async function getGetTodosData(
         exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange]
       }, false);
 
-      await client.query<GetTodosQuery>(GetTodosDocument, variables || {}).toPromise();
+      await client.query<GetTodosQuery>(GetTodosDocument, variables).toPromise();
     
       return { props: { urqlState: ssrCache.extractData() } };
     }
-
+    const TodoFieldsFragmentDoc = gql`
+    fragment TodoFields on Todo {
+      id
+      text
+    }
+  `;
 export const GetTodosFragmentedDocument = gql`
     query getTodosFragmented {
   todos {
@@ -109,7 +116,7 @@ export async function getGetTodosFragmentedData(
         exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange]
       }, false);
 
-      await client.query<GetTodosFragmentedQuery>(GetTodosFragmentedDocument, variables || {}).toPromise();
+      await client.query<GetTodosFragmentedQuery>(GetTodosFragmentedDocument, variables).toPromise();
     
       return { props: { urqlState: ssrCache.extractData() } };
     }

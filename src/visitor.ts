@@ -30,12 +30,6 @@ export class UrqlNextVisitor extends ClientSideBaseVisitor<
     return [...baseImports.filter(x => !x.includes('graphql-tag')), ...Array.from(this.imports)];
   }
 
-  _getDocumentNodeVariable(documentVariableName: string): string {
-    return this.config.documentMode === DocumentMode.external
-      ? `Operations.${documentVariableName}`
-      : documentVariableName;
-  }
-
   _buildQuery(
     node: OperationDefinitionNode,
     documentVariableName: string,
@@ -59,7 +53,7 @@ export class UrqlNextVisitor extends ClientSideBaseVisitor<
         exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange]
       }, false);
 
-      await client.query<${operationResultType}>(${this._getDocumentNodeVariable(documentVariableName)}, variables || {}).toPromise();
+      await client.query<${operationResultType}>(${documentVariableName}, variables).toPromise();
     
       return { props: { urqlState: ssrCache.extractData() } };
     }`

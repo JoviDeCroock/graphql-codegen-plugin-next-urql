@@ -7,6 +7,9 @@
     "generate": "graphql-codegen --config codegen.yml",
     "dev": "next"
   },
+  "resolutions": {
+    "@urql/core": "https://pkg.csb.dev/FormidableLabs/urql/commit/2f8bbc5b/@urql/core"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
