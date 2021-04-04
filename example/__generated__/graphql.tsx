@@ -34,6 +34,7 @@ export type MutationToggleTodoArgs = {
 export type Query = {
   __typename?: 'Query';
   todos?: Maybe<Array<Maybe<Todo>>>;
+  messages?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type Todo = {
@@ -43,6 +44,14 @@ export type Todo = {
   complete?: Maybe<Scalars['Boolean']>;
 };
 
+
+export type GetMessagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMessagesQuery = (
+  { __typename?: 'Query' }
+  & Pick<Query, 'messages'>
+);
 
 export type TodoFieldsFragment = (
   { __typename?: 'Todo' }
@@ -88,6 +97,24 @@ export const TodoFieldsFragmentDoc = gql`
   text
 }
     `;
+export const GetMessagesDocument = gql`
+    query getMessages {
+  messages
+}
+    `;
+export async function getGetMessagesData(
+      variables?: GetMessagesQueryVariables
+    ): Promise<{ props: { urqlState: { [key: string]: object } } }> {
+      const ssrCache = ssrExchange({ isClient: false });
+      const client = initUrqlClient({
+        url: "http://localhost:3000/api/graphql",
+        exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange]
+      }, false);
+
+      await client.query<GetMessagesQuery>(GetMessagesDocument, variables).toPromise();
+    
+      return { props: { urqlState: ssrCache.extractData() } };
+    }
 export const GetTodosNestedDocument = gql`
     query getTodosNested {
   todos {
@@ -97,7 +124,7 @@ export const GetTodosNestedDocument = gql`
     ${TodoFieldsFragmentDoc}`;
 export async function getGetTodosNestedData(
       variables?: GetTodosNestedQueryVariables
-    ): Promise<object> {
+    ): Promise<{ props: { urqlState: { [key: string]: object } } }> {
       const ssrCache = ssrExchange({ isClient: false });
       const client = initUrqlClient({
         url: "http://localhost:3000/api/graphql",
@@ -118,7 +145,7 @@ export const GetTodosDocument = gql`
     `;
 export async function getGetTodosData(
       variables?: GetTodosQueryVariables
-    ): Promise<object> {
+    ): Promise<{ props: { urqlState: { [key: string]: object } } }> {
       const ssrCache = ssrExchange({ isClient: false });
       const client = initUrqlClient({
         url: "http://localhost:3000/api/graphql",
@@ -138,7 +165,7 @@ export const GetTodosFragmentedDocument = gql`
     ${TodoFieldsFragmentDoc}`;
 export async function getGetTodosFragmentedData(
       variables?: GetTodosFragmentedQueryVariables
-    ): Promise<object> {
+    ): Promise<{ props: { urqlState: { [key: string]: object } } }> {
       const ssrCache = ssrExchange({ isClient: false });
       const client = initUrqlClient({
         url: "http://localhost:3000/api/graphql",

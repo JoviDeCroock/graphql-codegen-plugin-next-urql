@@ -46,7 +46,7 @@ export class UrqlNextVisitor extends ClientSideBaseVisitor<
 
     const getData = `export async function get${operationName}Data(
       variables?: ${operationVariablesTypes}
-    ): Promise<object> {
+    ): Promise<{ props: { urqlState: { [key: string]: object } } }> {
       const ssrCache = ssrExchange({ isClient: false });
       const client = initUrqlClient({
         url: "http://localhost:3000/api/graphql",

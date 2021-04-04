@@ -16,7 +16,7 @@ export function Todos() {
   const [res] = useQuery({ query: TODOS_QUERY });
   return (
     <div>
-      <h1>Server</h1>
+      <h1>Todos</h1>
       {res.data.todos.map((todo) => <Todo key={todo.id} {...todo} />)}
     </div>
   );

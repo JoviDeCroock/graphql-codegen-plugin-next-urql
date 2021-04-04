@@ -1,6 +1,7 @@
 import { ApolloServer, gql } from 'apollo-server-micro'
 
 const store = {
+  messages: ['hi', 'how are you?'],
   todos: [
     {
       id: 0,
@@ -23,10 +24,13 @@ const store = {
 const typeDefs = gql`
   type Query {
     todos: [Todo]
+    messages: [String]
   }
+
   type Mutation {
     toggleTodo(id: ID!): Todo
   }
+
   type Todo {
     id: ID
     text: String
@@ -37,6 +41,7 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     todos: () => store.todos,
+    messages: () => store.messages,
   },
   Mutation: {
     toggleTodo: (_root, { id }) => {
