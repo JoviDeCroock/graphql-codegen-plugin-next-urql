@@ -5,19 +5,18 @@ import { extractOperations } from "../src/operations/extract";
 describe("fixtures", () => {
   it("should extract from a simple dir", async () => {
     const p = path.resolve(__dirname, "simple");
-    const files = await glob(`${p}/pages/*.{js,jsx,tsx}`);
+    const files = await glob(`${p}/*.{js,jsx,tsx}`);
     const result = await extractOperations(p, files, false);
 
     expect(result).toMatchInlineSnapshot(`
       Object {
-        "test\\\\simple\\\\pages\\\\index.tsx_queries.ts": "export const test\\\\simple\\\\pages\\\\index.tsx_query_0 = gql\`
-        query todos {
-          todos {
-            id
-            title
-          }
+        "test\\\\simple\\\\index.tsx_queries.ts": "[
+        {
+          \\"id\\": \\"test\\\\\\\\simple\\\\\\\\index.tsx_query_TODOS_QUERY\\",
+          \\"query\\": \\"export const test\\\\\\\\simple\\\\\\\\index.tsx_query_TODOS_QUERY = gql\`\\\\n  query todos {\\\\n    todos {\\\\n      id\\\\n      title\\\\n    }\\\\n  }\\\\n\`\\",
+          \\"variables\\": []
         }
-      \`",
+      ]",
       }
     `);
   });
@@ -29,21 +28,20 @@ describe("fixtures", () => {
 
     expect(result).toMatchInlineSnapshot(`
       Object {
-        "test\\\\imports\\\\pages\\\\index.tsx_queries.ts": "export const test\\\\imports\\\\pages\\\\index.tsx_query_0 = gql\`
-        query config {
-          config {
-            site_name
-          }
+        "test\\\\imports\\\\pages\\\\index.tsx_queries.ts": "[
+        {
+          \\"id\\": \\"test\\\\\\\\imports\\\\\\\\pages\\\\\\\\index.tsx_query_CONFIG_QUERY\\",
+          \\"query\\": \\"export const test\\\\\\\\imports\\\\\\\\pages\\\\\\\\index.tsx_query_CONFIG_QUERY = gql\`\\\\n  query config {\\\\n    config {\\\\n      site_name\\\\n    }\\\\n  }\\\\n\`\\",
+          \\"variables\\": []
+        },
+        {
+          \\"id\\": \\"C:\\\\\\\\Users\\\\\\\\jovid\\\\\\\\Desktop\\\\\\\\graphql-codegen-plugin-next-urql\\\\\\\\test\\\\\\\\imports\\\\\\\\components\\\\\\\\Todos.tsx_query_TODOS_QUERY\\",
+          \\"query\\": \\"export const C:\\\\\\\\Users\\\\\\\\jovid\\\\\\\\Desktop\\\\\\\\graphql-codegen-plugin-next-urql\\\\\\\\test\\\\\\\\imports\\\\\\\\components\\\\\\\\Todos.tsx_query_TODOS_QUERY = gql\`\\\\n  query todos ($from: Int) {\\\\n    todos (from: $from, limit: 10) {\\\\n      id\\\\n      title\\\\n    }\\\\n  }\\\\n\`\\",
+          \\"variables\\": [
+            \\"from\\"
+          ]
         }
-      \`
-      export const C:\\\\Users\\\\jovid\\\\Desktop\\\\graphql-codegen-plugin-next-urql\\\\test\\\\imports\\\\components\\\\Todos.tsx_query_0 = gql\`
-        query todos {
-          todos {
-            id
-            title
-          }
-        }
-      \`",
+      ]",
       }
     `);
   });

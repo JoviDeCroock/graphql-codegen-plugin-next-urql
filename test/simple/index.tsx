@@ -10,9 +10,7 @@ const TODOS_QUERY = gql`
   }
 `;
 
-const MyPage = () => {
+export const Todos = () => {
   useQuery({ query: TODOS_QUERY });
   return <p>hi</p>
 }
-
-export default MyPage;

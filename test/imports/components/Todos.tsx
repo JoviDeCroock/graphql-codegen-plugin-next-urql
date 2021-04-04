@@ -2,8 +2,8 @@ import { gql } from '@urql/core';
 import { useQuery } from 'urql';
 
 const TODOS_QUERY = gql`
-  query todos {
-    todos {
+  query todos ($from: Int) {
+    todos (from: $from, limit: 10) {
       id
       title
     }
@@ -11,6 +11,6 @@ const TODOS_QUERY = gql`
 `;
 
 export const Todos = () => {
-  useQuery({ query: TODOS_QUERY });
+  useQuery({ query: TODOS_QUERY, variables: { from: 0 } });
   return <p>hi</p>
 }
