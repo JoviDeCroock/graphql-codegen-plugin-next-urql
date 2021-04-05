@@ -1,18 +1,14 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "noUnusedLocals": true,
-    "noEmit": true,
-    "lib": ["dom", "esnext"],
-    "jsx": "preserve",
-    "module": "es2015",
+    "target": "es6",
+    "lib": [
+      "es2015"
+    ],
+    "module": "commonjs",
     "moduleResolution": "node",
-    "target": "esnext",
-    "strict": true,
-    "noImplicitAny": false,
-    "noUnusedParameters": true,
-    "skipLibCheck": true
+    "jsx": "preserve",
+    "outDir": "build",
+    "esModuleInterop": true
   },
   "include": ["src"]
 }
